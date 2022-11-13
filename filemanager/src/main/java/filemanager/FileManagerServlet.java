@@ -89,6 +89,8 @@ public class FileManagerServlet extends HttpServlet {
         for (File file : allFiles) {
             (file.isDirectory() ? directories : files).add(file);
         }
+
+        req.setAttribute("prevPath", currentPath.getParent());
         req.setAttribute("files", files);
         req.setAttribute("directories", directories);
     }

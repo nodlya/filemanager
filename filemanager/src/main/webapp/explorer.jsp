@@ -20,8 +20,7 @@
 <hr>
 <h4>${date}</h4>
 <hr>
-<a href="?path=${currentPath.substring(0, currentPath.lastIndexOf("\\")
-              + (currentPath.lastIndexOf("\\") != currentPath.indexOf("\\") ? 0 : 1))}">>Up</a><br>
+<a href="${contextPath}?path=${prevPath}">>Up</a><br>
 <c:forEach var="directory" items="${directories}">
     <a href="${contextPath}?path=${directory.getAbsolutePath()}">${directory.getName()}/</a><br>
 </c:forEach>
