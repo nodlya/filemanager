@@ -7,14 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
+
+    public static Logger logger = Logger.getLogger("");
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = UserRepository.getUserByCookies(req.getCookies());
-        Logger logger = Logger.getLogger("");
 
         if (user != null) {
             logger.info(user.toString());
@@ -31,14 +33,24 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        Logger logger = Logger.getLogger("");
+
         logger.info("post!");
 
-        User user = UserRepository.getUserByLogin(login);
+        /*User user = UserRepository.getUserByLogin(login);
         logger.info(login);
         if (user == null || user.getPassword() == password)
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/login");*/
+        User user = null;
+        try {
+            user = JDBCConnection.getUserByLogin(login);
+            if (JDBCConnection.authUser(user, password))
+                resp.sendRedirect("/login");
+        } catch (SQLException e) {
+            logger.info("problems with auth");
+            e.printStackTrace();
+        }
 
+        UserRepository.addUser(user);
         Cookies.addCookie(resp, "login", login);
         logger.info("added cookies");
         resp.sendRedirect("/");

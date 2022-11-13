@@ -30,7 +30,7 @@ public class FileManagerServlet extends HttpServlet {
             logger.info("redirect to login");
         } else {
             String path = req.getParameter("path");
-            if (path == null || !path.startsWith("C:\\" + user.getLogin() + "\\")) {
+            if (path == null) {
                 path = "C:\\Users\\" + user.getLogin() + "\\";
             }
 

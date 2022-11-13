@@ -33,25 +33,29 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         Logger logger =  Logger.getLogger("");
 
-        /*String url = "jdbc:mysql://localhost:3306/users";
-        String username = "root";
-        String password2 = "password";
-        logger.info("Connecting...");
-
-        try (Connection connection = DriverManager.getConnection(url, username, password2)) {
-            logger.info("Connection successful!");
-        } catch (SQLException e) {
-            logger.info("Connection failed!");
-            e.printStackTrace();
-        }*/
+        /*JDBCConnection.connect();
+        JDBCConnection.disconnect();
 
         if (!UserRepository.containsUserByLogin(login))
         {
             User user = new User(login, email, password);
             UserRepository.addUser(user);
+
             resp.sendRedirect("/login");
 
             logger.info("redirect to /");
+        }*/
+
+        User user = new User(login, email, password);
+        try {
+            if (!JDBCConnection.containsUser(user)) {
+                JDBCConnection.addUser(user);
+                resp.sendRedirect("/login");
+                logger.info("redirect to /");
+            }
+        } catch (SQLException e) {
+            logger.info("Problems with database");
+            e.printStackTrace();
         }
     }
 }
