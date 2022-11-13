@@ -1,0 +1,6 @@
+filemanager\Cookies.class
+filemanager\FileManagerServlet.class
+filemanager\User.class
+filemanager\RegisterServlet.class
+filemanager\LoginServlet.class
+filemanager\UserRepository.class
