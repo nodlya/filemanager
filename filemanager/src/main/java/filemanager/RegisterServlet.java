@@ -33,9 +33,7 @@ public class RegisterServlet extends HttpServlet {
         String password = req.getParameter("password");
         Logger logger =  Logger.getLogger("");
 
-        /*JDBCConnection.connect();
-        JDBCConnection.disconnect();
-
+        /*
         if (!UserRepository.containsUserByLogin(login))
         {
             User user = new User(login, email, password);
@@ -45,6 +43,10 @@ public class RegisterServlet extends HttpServlet {
 
             logger.info("redirect to /");
         }*/
+
+        if (login == null || UserRepository.getUser(login) != null || email == null || password == null) {
+            return;
+        }
 
         User user = new User(login, email, password);
         try {

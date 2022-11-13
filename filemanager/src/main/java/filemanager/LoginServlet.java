@@ -36,21 +36,26 @@ public class LoginServlet extends HttpServlet {
 
         logger.info("post!");
 
-        /*User user = UserRepository.getUserByLogin(login);
+        User user = UserRepository.getUser(login);
         logger.info(login);
-        if (user == null || user.getPassword() == password)
-            resp.sendRedirect("/login");*/
-        User user = null;
-        try {
-            user = JDBCConnection.getUserByLogin(login);
-            if (JDBCConnection.authUser(user, password))
-                resp.sendRedirect("/login");
-        } catch (SQLException e) {
-            logger.info("problems with auth");
-            e.printStackTrace();
+
+        if (user == null || user.getPassword() != password) {
+            resp.sendRedirect("/login");
+            return;
         }
 
-        UserRepository.addUser(user);
+//        User user = null;
+//        try {
+//            user = JDBCConnection.getUserByLogin(login);
+//            if (JDBCConnection.authUser(user, password))
+//                resp.sendRedirect("/login");
+//        } catch (SQLException e) {
+//            logger.info("problems with auth");
+//            e.printStackTrace();
+//        }
+//
+//        UserRepository.addUser(user);
+
         Cookies.addCookie(resp, "login", login);
         logger.info("added cookies");
         resp.sendRedirect("/");

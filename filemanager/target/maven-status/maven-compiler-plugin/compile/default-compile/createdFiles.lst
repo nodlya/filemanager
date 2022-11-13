@@ -5,3 +5,4 @@ filemanager\FileManagerServlet.class
 filemanager\User.class
 filemanager\LoginServlet.class
 filemanager\UserRepository.class
+filemanager\HibernateUtil.class

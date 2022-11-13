@@ -1,9 +1,23 @@
 package filemanager;
 
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class User {
-    private final String login;
-    private final String password;
-    private final String email;
+    @Id
+    @GeneratedValue
+    private int id;
+
+    @NaturalId
+    private String login;
+    private String password;
+    private String email;
+
+    public User(){}
 
     public User(String login, String email, String password) {
         this.login = login;
