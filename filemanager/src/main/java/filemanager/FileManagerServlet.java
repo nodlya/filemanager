@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/")
@@ -27,21 +28,26 @@ public class FileManagerServlet extends HttpServlet {
         Logger logger = Logger.getLogger("name");
         if (user == null) {
             resp.sendRedirect("/login");
-            logger.info("redirect to login");
+            logger.log(Level.INFO, "Redirected to login");
         } else {
             String path = req.getParameter("path");
-            if (path == null || !path.startsWith("C:\\" + user.getLogin() + "\\")) {
+            logger.log(Level.INFO, "path set to " + path);
+            if (path == null) {
                 path = "C:\\Users\\" + user.getLogin() + "\\";
             }
+            //|| !path.startsWith("C:\\" + user.getLogin() + "\\")
 
             path = path.replaceAll("%20", " ");
+            logger.log(Level.INFO, "path set to " + path);
 
             File currentPath = new File(path);
+            logger.log(Level.INFO, "currentPath set to " + currentPath);
             if (!currentPath.exists()) {
                 currentPath.mkdir();
             }
 
             if (currentPath.isDirectory()) {
+                logger.log(Level.INFO, "currentPath is a directory");
                 //showFiles(req, currentPath.listFiles(), path);
                 showFiles(req, currentPath);
                 req.setAttribute("date", DATE_FORMAT.format(new Date()));
@@ -51,6 +57,7 @@ public class FileManagerServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher("explorer.jsp");
                 requestDispatcher.forward(req, resp);
             } else {
+                logger.log(Level.INFO, "currentPath is not a directory");
                 downloadFile(resp, currentPath);
             }
             logger.info("redirect to filemanager");
